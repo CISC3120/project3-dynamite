@@ -2,11 +2,12 @@ package edu.cuny.brooklyn.cisc3120.project.game;
 
 public class ShootingPane {
 	int width, height;
+	int[][] paneCells;
 	
 	public ShootingPane(int height, int width) {
 		this.width=width;
 		this.height=height;
-		int[][] paneCells;
+		
 		
 		paneCells= new int[height][width];
 		for (int i = 0; i < height; i++) {
@@ -17,26 +18,26 @@ public class ShootingPane {
 		
 	}
 	
-	public int[][] getBoard() {
-        return boardCells;
+	public int[][] getpane() {
+        return paneCells;
     }
 
     public int getCell(int x, int y) {
-        return boardCells[y][x];
+        return paneCells[y][x];
     }
 
     public void setCell(int x, int y, int target) {
-        boardCells[y][x] = target;
+        paneCells[y][x] = target;
     }
 
     public void plotBorder() {
         for (int i = 0; i < width; i++) {
-            boardCells[0][i] = '-';
-            boardCells[height - 1][i] = '-';
+            paneCells[0][i] = '-';
+            paneCells[height - 1][i] = '-';
         }
         for (int i = 0; i < height; i++) {
-            boardCells[i][0] = '|';
-            boardCells[i][width - 1] = '|';
+            paneCells[i][0] = '|';
+            paneCells[i][width - 1] = '|';
         }
     }
 
@@ -49,7 +50,7 @@ public class ShootingPane {
             if (x + i < 0) {
                 logger.debug("Character " + text.charAt(i) + " in the text is outside of the displaying area.");
             } else {
-                boardCells[y][x + i] = text.charAt(i);
+                paneCells[y][x + i] = text.charAt(i);
             }
         }
     }
