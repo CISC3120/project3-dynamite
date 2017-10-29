@@ -1,5 +1,8 @@
 package edu.cuny.brooklyn.cisc3120.project.game;
 
+import javafx.scene.layout.StackPane;
+
+
 public class ShootingPane {
 	int width, height;
 	int[][] paneCells;
@@ -47,6 +50,13 @@ public class ShootingPane {
     
     public double getHeight() {
         return height;
+    }
+    
+    public StackPane buildShootingPane() {
+    	StackPane shootingPane=new StackPane();
+    	
+    	return shootingPane;
+    	
     }
 
 }

@@ -111,8 +111,12 @@ public class GameUI {
     
     private VBox buildSideBar() {
         VBox vboxSideBar = new VBox();
-        // StackPane shootingPane = buildShootingPane();
+        StackPane shootingPane = gamePane.buildShootingPane();
+        vboxSideBar.getChildren().add(shootingPane);
+        
+        
         // VBox vboxStatistics = buildStatisticsBox();
+        // vboxSideBar
         return vboxSideBar;
     }
     
