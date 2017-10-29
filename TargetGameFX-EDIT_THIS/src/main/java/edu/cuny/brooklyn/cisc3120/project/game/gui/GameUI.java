@@ -110,15 +110,45 @@ public class GameUI {
     }
     
     private VBox buildSideBar() {
-        VBox vboxSideBar = new VBox();
+        /*VBox vboxSideBar = new VBox();
         StackPane shootingPane = gamePane.buildShootingPane();
         vboxSideBar.getChildren().add(shootingPane);
         
         
         // VBox vboxStatistics = buildStatisticsBox();
         // vboxSideBar
-        return vboxSideBar;
+        return vboxSideBar;*/
+    	VBox vboxSideBar = new VBox();
+	     StackPane shootingPane = buildShootingPane();
+	     //VBox vboxStatistics; = buildStatisticsBox(); lets see how this works w.o the statistics box
+	     vboxSideBar.setPadding(new Insets(0, 0, PADDING, PADDING));
+       vboxSideBar.getChildren().addAll(shootingPane); //, vboxStatistics
+       return vboxSideBar;
     }
+    
+    private StackPane buildShootingPane() {
+    	final double CANVAS_WIDTH = gameBoard.getWidth() * 3;
+    	final double CANVAS_HEIGHT = gameBoard.getHeight() * 3;
+        Canvas shootingCanvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+        StackPane canvasHolder = new StackPane();
+        canvasHolder.setMaxWidth(Double.MAX_VALUE);
+        canvasHolder.setBackground(new Background(new BackgroundFill(Color.WHITE, 
+                CornerRadii.EMPTY , Insets.EMPTY)));
+
+          addMouseMotionListener(shootingCanvas);
+
+       canvasHolder.getChildren().add(shootingCanvas);
+        return canvasHolder;
+    }
+    
+    private void addMouseMotionListener(final Canvas cv){
+
+
+    }
+
+
+    
+    
     
     private HBox buildMainBox() {
         targetCanvas = new Canvas(INIT_TARGET_CANVAS_WIDTH, INIT_TARGET_CANVAS_HEIGHT);

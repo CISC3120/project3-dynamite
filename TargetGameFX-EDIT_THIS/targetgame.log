@@ -1,1 +1,1 @@
-2017-10-29 13:24:59.761 [JavaFX Application Thread] DEBUG edu.cuny.brooklyn.cisc3120.project.game.TargetGame edu.cuny.brooklyn.cisc3120.project.game.TargetGame.getRandomTarget(TargetGame.java:55) - Target: 33,29
+2017-10-29 14:42:39.025 [JavaFX Application Thread] DEBUG edu.cuny.brooklyn.cisc3120.project.game.TargetGame edu.cuny.brooklyn.cisc3120.project.game.TargetGame.getRandomTarget(TargetGame.java:55) - Target: 18,16
