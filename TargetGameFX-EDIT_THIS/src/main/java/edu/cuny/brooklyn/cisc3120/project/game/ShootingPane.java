@@ -41,20 +41,6 @@ public class ShootingPane {
         }
     }
 
-    public void writeText(int x, int y, String text) {
-        if (x >= width || y < 0 || y >= height) {
-            logger.debug("Text is outside of the displaying area.");
-            return;
-        }
-        for (int i = 0; i < text.length(); i++) {
-            if (x + i < 0) {
-                logger.debug("Character " + text.charAt(i) + " in the text is outside of the displaying area.");
-            } else {
-                paneCells[y][x + i] = text.charAt(i);
-            }
-        }
-    }
-
     public double getWidth() {
         return width;
     }

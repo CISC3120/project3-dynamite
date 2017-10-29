@@ -1,6 +1,8 @@
 package edu.cuny.brooklyn.cisc3120.project.game.gui;
 
 import edu.cuny.brooklyn.cisc3120.project.game.GameBoard;
+import edu.cuny.brooklyn.cisc3120.project.game.ShootingPane;
+
 import edu.cuny.brooklyn.cisc3120.project.game.Shot;
 import edu.cuny.brooklyn.cisc3120.project.game.Target;
 import edu.cuny.brooklyn.cisc3120.project.game.TargetGame.PostShotAction;
@@ -37,14 +39,16 @@ public class GameUI {
     
     private Stage primaryStage;
     private GameBoard gameBoard;
+    private ShootingPane gamePane;
     private Canvas targetCanvas;
     private Target target;
     private EventHandler<ActionEvent> shootingActionHandler;
     private PostShotAction postShotAction;
     
-    public GameUI(GameBoard board, Stage stage) {
+    public GameUI(GameBoard board, Stage stage, ShootingPane pane) {
         gameBoard = board;
         primaryStage = stage;
+        gamePane = pane;
 
         HBox hboxShooting = buildKeyboardInputBox();
         
