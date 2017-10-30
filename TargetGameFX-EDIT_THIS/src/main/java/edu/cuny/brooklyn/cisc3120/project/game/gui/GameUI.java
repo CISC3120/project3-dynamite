@@ -140,16 +140,29 @@ public class GameUI {
        canvasHolder.getChildren().add(shootingCanvas);
         return canvasHolder;
     }
-    
+
     private void addMouseMotionListener(final Canvas cv){
-
-
+    	Cross cross = new Cross(CANVAS_WIDTH, CANVAS_HEIGHT);
+    	GraphicsContext gc = cv.getGraphicsContext2D();
+    	EventHandler<MouseEvent> mouseMovedEventHandler = (MouseEvent event)->{
+        	cross.setPos(event.getX(),event.getY());
+        	cross.draw(gc);
+        	String msg =
+        			"(x: "       + event.getX()      + ", y: "       + event.getY()       + ") -- " +
+        					"(sceneX: "  + event.getSceneX() + ", sceneY: "  + event.getSceneY()  + ") -- " +
+        					"(screenX: " + event.getScreenX()+ ", screenY: " + event.getScreenY() + ")";
+       	// System.out.println(msg);     
+        };
+    	cv.setOnMouseMoved(mouseMovedEventHandler);
+    	EventHandler<MouseEvent> mouseClickedEventHandler = (MouseEvent event)->{
+    		xGuessedTextField.setText(Integer.toString((int)event.getX()/3));
+    		yGuessedTextField.setText(Integer.toString((int)event.getY()/3));
+    		String msg = "(x: "       + event.getX()/3      + ", y: "       + event.getY()/3       + ")" ;
+    		System.out.println("Mouse clicked at "+msg);
+    	};
+	    cv.setOnMouseClicked(mouseClickedEventHandler);
     }
 
-
-    
-    
-    
     private HBox buildMainBox() {
         targetCanvas = new Canvas(INIT_TARGET_CANVAS_WIDTH, INIT_TARGET_CANVAS_HEIGHT);
         StackPane canvasHolder = new StackPane();
