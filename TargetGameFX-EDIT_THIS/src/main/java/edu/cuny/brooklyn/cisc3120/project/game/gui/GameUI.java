@@ -142,7 +142,7 @@ public class GameUI {
     }
 
     private void addMouseMotionListener(final Canvas cv){
-    	Cross cross = new Cross(CANVAS_WIDTH, CANVAS_HEIGHT);
+    	Cross cross = new Cross(INIT_TARGET_CANVAS_WIDTH, INIT_TARGET_CANVAS_HEIGHT);
     	GraphicsContext gc = cv.getGraphicsContext2D();
     	EventHandler<MouseEvent> mouseMovedEventHandler = (MouseEvent event)->{
         	cross.setPos(event.getX(),event.getY());
@@ -155,8 +155,8 @@ public class GameUI {
         };
     	cv.setOnMouseMoved(mouseMovedEventHandler);
     	EventHandler<MouseEvent> mouseClickedEventHandler = (MouseEvent event)->{
-    		xGuessedTextField.setText(Integer.toString((int)event.getX()/3));
-    		yGuessedTextField.setText(Integer.toString((int)event.getY()/3));
+    	//	xGuessedTextField.setText(Integer.toString((int)event.getX()/3));
+    	//	yGuessedTextField.setText(Integer.toString((int)event.getY()/3));
     		String msg = "(x: "       + event.getX()/3      + ", y: "       + event.getY()/3       + ")" ;
     		System.out.println("Mouse clicked at "+msg);
     	};
