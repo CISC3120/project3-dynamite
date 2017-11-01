@@ -119,10 +119,10 @@ public class GameUI {
         // vboxSideBar
         return vboxSideBar;*/
     	VBox vboxSideBar = new VBox();
-	     StackPane shootingPane = buildShootingPane();
-	     //VBox vboxStatistics; = buildStatisticsBox(); lets see how this works w.o the statistics box
-	     vboxSideBar.setPadding(new Insets(0, 0, PADDING, PADDING));
-       vboxSideBar.getChildren().addAll(shootingPane); //, vboxStatistics
+	    StackPane shootingPane = buildShootingPane();
+	    StackPane statisticsbox = buildStatisticsBox(); //lets see how this works w.o the statistics box
+	    vboxSideBar.setPadding(new Insets(0, 0, PADDING, PADDING));
+       vboxSideBar.getChildren().addAll(shootingPane, statisticsbox); //, vboxStatistics
        return vboxSideBar;
     }
     
@@ -135,13 +135,27 @@ public class GameUI {
         canvasHolder.setBackground(new Background(new BackgroundFill(Color.WHITE, 
                 CornerRadii.EMPTY , Insets.EMPTY)));
 
-          addMouseMotionListener(shootingCanvas);
+          //addMouseMotionListener(shootingCanvas);
+
+       canvasHolder.getChildren().add(shootingCanvas);
+        return canvasHolder;
+    }
+    
+    private StackPane buildStatisticsBox() {
+    	final double CANVAS_WIDTH = gameBoard.getWidth() * 3;
+    	final double CANVAS_HEIGHT = gameBoard.getHeight() * 3;
+        Canvas shootingCanvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+        StackPane canvasHolder = new StackPane();
+        canvasHolder.setMaxWidth(Double.MAX_VALUE);
+        canvasHolder.setBackground(new Background(new BackgroundFill(Color.WHITE, 
+                CornerRadii.EMPTY , Insets.EMPTY)));
+
 
        canvasHolder.getChildren().add(shootingCanvas);
         return canvasHolder;
     }
 
-    private void addMouseMotionListener(final Canvas cv){
+    /*private void addMouseMotionListener(final Canvas cv){
     	Cross cross = new Cross(INIT_TARGET_CANVAS_WIDTH, INIT_TARGET_CANVAS_HEIGHT);
     	GraphicsContext gc = cv.getGraphicsContext2D();
     	EventHandler<MouseEvent> mouseMovedEventHandler = (MouseEvent event)->{
@@ -161,7 +175,7 @@ public class GameUI {
     		System.out.println("Mouse clicked at "+msg);
     	};
 	    cv.setOnMouseClicked(mouseClickedEventHandler);
-    }
+    }*/
 
     private HBox buildMainBox() {
         targetCanvas = new Canvas(INIT_TARGET_CANVAS_WIDTH, INIT_TARGET_CANVAS_HEIGHT);
