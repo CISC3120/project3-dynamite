@@ -118,7 +118,8 @@ public class GameUI {
         // VBox vboxStatistics = buildStatisticsBox();
         // vboxSideBar
         return vboxSideBar;*/
-    	VBox vboxSideBar = new VBox();
+    	double spacing=80;
+    	VBox vboxSideBar = new VBox(spacing);
 	    StackPane shootingPane = buildShootingPane();
 	    StackPane statisticsbox = buildStatisticsBox(); //lets see how this works w.o the statistics box
 	    vboxSideBar.setPadding(new Insets(0, 0, PADDING, PADDING));
