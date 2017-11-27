@@ -1,0 +1,9 @@
+#header{
+	-fx-font: 12px Tahoma;
+}
+.label{
+	-fx-font: 8px 'Courier New';
+}
+.data{
+	-fx-font: 8px 'Verdana';
+}

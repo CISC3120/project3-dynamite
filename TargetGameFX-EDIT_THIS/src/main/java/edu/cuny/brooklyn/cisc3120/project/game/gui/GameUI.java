@@ -1,18 +1,22 @@
-// importting packeges
 package edu.cuny.brooklyn.cisc3120.project.game.gui;
 
+
 import edu.cuny.brooklyn.cisc3120.project.game.GameBoard;
-
-import edu.cuny.brooklyn.cisc3120.project.game.ShootingPane;
-
 import edu.cuny.brooklyn.cisc3120.project.game.Shot;
 import edu.cuny.brooklyn.cisc3120.project.game.Target;
 import edu.cuny.brooklyn.cisc3120.project.game.TargetGame.PostShotAction;
+import javafx.scene.canvas.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.util.Duration;
+import javafx.animation.*;
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.Group;
+import javafx.scene.text.Text;
+import javafx.scene.shape.Line;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
@@ -26,6 +30,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -38,20 +43,18 @@ public class GameUI {
     private final static int INIT_TARGET_CANVAS_HEIGHT = 400;
     private final static int INIT_MAIN_SCENE_WIDTH = 600;
     private final static int INIT_MAIN_SCENE_HEIGHT = 500;
-    private final static int MAX_TRIES =5; 
+    private final static int MAX_TRIES = 5;
     
     private Stage primaryStage;
     private GameBoard gameBoard;
-    private ShootingPane gamePane;
     private Canvas targetCanvas;
     private Target target;
     private EventHandler<ActionEvent> shootingActionHandler;
     private PostShotAction postShotAction;
     
-    public GameUI(GameBoard board, Stage stage, ShootingPane pane) {
+    public GameUI(GameBoard board, Stage stage) {
         gameBoard = board;
         primaryStage = stage;
-        gamePane = pane;
 
         HBox hboxShooting = buildKeyboardInputBox();
         
@@ -89,12 +92,10 @@ public class GameUI {
     public void setPostShotActionHandler(PostShotAction postShotAction) {
         this.postShotAction = postShotAction;
     }
-    
     TextField xGuessedTextField;
     TextField yGuessedTextField;
-    
     private HBox buildKeyboardInputBox() {
-    	xGuessedTextField = new TextField(Integer.toString((int)gameBoard.getWidth()/2));
+        xGuessedTextField = new TextField(Integer.toString((int)gameBoard.getWidth()/2));
         xGuessedTextField.setOnMouseClicked((MouseEvent e) -> {xGuessedTextField.selectAll();});
         yGuessedTextField = new TextField(Integer.toString((int)gameBoard.getHeight()/2));
         yGuessedTextField.setOnMouseClicked((MouseEvent e) -> {yGuessedTextField.selectAll();});
@@ -118,91 +119,11 @@ public class GameUI {
     
     private VBox buildSideBar() {
         VBox vboxSideBar = new VBox();
-        StackPane shootingPane = gamePane.buildShootingPane();
-        VBox vboxStatistics = buildStatisticsBox();
-        vboxSideBar.setPadding(new Insets(0, 0, PADDING, PADDING));
+	     StackPane shootingPane = buildShootingPane();
+	     VBox vboxStatistics = buildStatisticsBox();
+	     vboxSideBar.setPadding(new Insets(0, 0, PADDING, PADDING));
         vboxSideBar.getChildren().addAll(shootingPane, vboxStatistics);
-         vboxSideBar
         return vboxSideBar;
-         
-         private HBox buildMainBox() {
-             targetCanvas = new Canvas(INIT_TARGET_CANVAS_WIDTH, INIT_TARGET_CANVAS_HEIGHT);
-             StackPane canvasHolder = new StackPane();
-             canvasHolder.setMaxWidth(Double.MAX_VALUE);
-             canvasHolder.setBackground(new Background(new BackgroundFill(Color.WHITE, 
-                     CornerRadii.EMPTY , Insets.EMPTY)));
-             canvasHolder.getChildren().add(targetCanvas);
-             
-             VBox vboxSideBar = buildSideBar();
-             
-             HBox hbox = new HBox();
-             hbox.getChildren().addAll(canvasHolder, vboxSideBar);
-             
-             return hbox;
-         }
-         
-        	double spacing=80;
-    	
-    	 	VBox vboxSideBar = new VBox(spacing);
-	    StackPane shootingPane = buildShootingPane();
-	    StackPane statisticsbox = buildStatisticsBox(); //lets see how this works w.o the statistics box
-	    vboxSideBar.setPadding(new Insets(0, 0, PADDING, PADDING));
-       vboxSideBar.getChildren().addAll(shootingPane, statisticsbox); //, vboxStatistics
-       return vboxSideBar;
-    }
-    
-    private double CANVAS_WIDTH = 0;
-    private double CANVAS_HEIGHT = 0;
-    
-    private StackPane buildShootingPane() {
-    	final double CANVAS_WIDTH = gameBoard.getWidth() * 3;
-    	final double CANVAS_HEIGHT = gameBoard.getHeight() * 3;
-        Canvas shootingCanvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-        StackPane canvasHolder = new StackPane();
-        canvasHolder.setMaxWidth(Double.MAX_VALUE);
-        canvasHolder.setBackground(new Background(new BackgroundFill(Color.WHITE, 
-                CornerRadii.EMPTY , Insets.EMPTY)));
-
-          addMouseMotionListener(shootingCanvas);
-
-       canvasHolder.getChildren().add(shootingCanvas);
-        return canvasHolder;
-    }
-    
-    private StackPane buildStatisticsBox() {
-    	final double CANVAS_WIDTH = gameBoard.getWidth() * 3;
-    	final double CANVAS_HEIGHT = gameBoard.getHeight() * 3;
-        Canvas shootingCanvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
-        StackPane canvasHolder = new StackPane();
-        canvasHolder.setMaxWidth(Double.MAX_VALUE);
-        canvasHolder.setBackground(new Background(new BackgroundFill(Color.WHITE, 
-                CornerRadii.EMPTY , Insets.EMPTY)));
-
-
-       canvasHolder.getChildren().add(shootingCanvas);
-        return canvasHolder;
-    }
-
-    private void addMouseMotionListener(final Canvas cv){
-    	Cross cross = new Cross(INIT_TARGET_CANVAS_WIDTH, INIT_TARGET_CANVAS_HEIGHT);
-    	GraphicsContext gc = cv.getGraphicsContext2D();
-    	EventHandler<MouseEvent> mouseMovedEventHandler = (MouseEvent event)->{
-        	cross.setPos(event.getX(),event.getY());
-        	cross.draw(gc);
-        	String msg =
-        			"(x: "       + event.getX()      + ", y: "       + event.getY()       + ") -- " +
-        					"(sceneX: "  + event.getSceneX() + ", sceneY: "  + event.getSceneY()  + ") -- " +
-        					"(screenX: " + event.getScreenX()+ ", screenY: " + event.getScreenY() + ")";
-       	// System.out.println(msg);     
-        };
-    	cv.setOnMouseMoved(mouseMovedEventHandler);
-    	EventHandler<MouseEvent> mouseClickedEventHandler = (MouseEvent event)->{
-    		xGuessedTextField.setText(Integer.toString((int)event.getX()/3));
-     	yGuessedTextField.setText(Integer.toString((int)event.getY()/3));
-    		String msg = "(x: "       + event.getX()/3      + ", y: "       + event.getY()/3       + ")" ;
-    		System.out.println("Mouse clicked at "+msg);
-    	};
-	    cv.setOnMouseClicked(mouseClickedEventHandler);
     }
 
     private HBox buildMainBox() {
@@ -219,6 +140,56 @@ public class GameUI {
         hbox.getChildren().addAll(canvasHolder, vboxSideBar);
         
         return hbox;
+    }
+    
+    private double CANVAS_WIDTH = 0;
+    private double CANVAS_HEIGHT = 0;
+    private StackPane buildShootingPane() {
+    	CANVAS_WIDTH = gameBoard.getWidth() * 3;
+    	CANVAS_HEIGHT = gameBoard.getHeight() * 3;
+        Canvas shootingCanvas = new Canvas(CANVAS_WIDTH, CANVAS_HEIGHT);
+        StackPane canvasHolder = new StackPane();
+        canvasHolder.setMaxWidth(Double.MAX_VALUE);
+        canvasHolder.setBackground(new Background(new BackgroundFill(Color.WHITE, 
+                CornerRadii.EMPTY , Insets.EMPTY)));
+        
+        addMouseMotionListener(shootingCanvas);       
+//        new AnimationTimer() {
+//            @Override
+//            public void handle(long currentNanoTime) {
+//                gc.setFill(Color.WHITE);
+//                gc.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+//                cross.draw(gc);
+//            }
+//        }.start();
+        canvasHolder.getChildren().add(shootingCanvas);
+        return canvasHolder;
+    }
+    
+    private void addMouseMotionListener(final Canvas cv){
+        Cross cross = new Cross(CANVAS_WIDTH, CANVAS_HEIGHT);
+        GraphicsContext gc = cv.getGraphicsContext2D();;
+        EventHandler<MouseEvent> mouseMovedEventHandler = (MouseEvent event)->{
+        	cross.setPos(event.getX(),event.getY());
+        	cross.draw(gc);
+        	String msg =
+        			"(x: "       + event.getX()      + ", y: "       + event.getY()       + ") -- " +
+        					"(sceneX: "  + event.getSceneX() + ", sceneY: "  + event.getSceneY()  + ") -- " +
+        					"(screenX: " + event.getScreenX()+ ", screenY: " + event.getScreenY() + ")";
+//        	System.out.println(msg);    
+        };
+    	cv.setOnMouseMoved(mouseMovedEventHandler);
+    	EventHandler<MouseEvent> mouseClickedEventHandler = (MouseEvent event)->{
+    		int shotX = (int)event.getX()/3;
+    		int shotY = (int)event.getY()/3;
+    		xGuessedTextField.setText(Integer.toString(shotX));
+    		yGuessedTextField.setText(Integer.toString(shotY));
+    		String msg = "(x: "       + shotX      + ", y: "       + shotY      + ")" ;
+    		System.out.println("Mouse clicked at "+msg);
+            Shot shot = new Shot(shotX, shotY);
+            handleShotAction(target, shot);
+    	};
+	    cv.setOnMouseClicked(mouseClickedEventHandler);
     }
     
     private HBox getStatRow(String text, Text data){
@@ -267,7 +238,6 @@ public class GameUI {
         gc.clearRect(xPos, yPos, cellWidth, cellHeight);
         
     }
-    
     private int tries = 0;
     private int won = 0;
     private int lost = 0;
@@ -318,6 +288,4 @@ public class GameUI {
 		lost ++;
 		lossCountText.setText(Integer.toString(lost));
     }
-}
-
 }

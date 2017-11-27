@@ -15,12 +15,9 @@ public class TargetGame {
 
     private final int GAME_TARGET_AREA_WIDTH = 40;
     private final int GAME_TARGET_AREA_HEIGHT = 40;
-    private final int PANE_WIDTH = 20;
-    private final int PANE_HEIGHT = 20;
 
     private GameBoard gameBoard; // having its own dimension: cells
     private GameUI gameUI; // having its own dimension: cells to characters
-    private ShootingPane pane; 
     private Random rng;
     private Target target;
     
@@ -30,10 +27,8 @@ public class TargetGame {
 
     public TargetGame(Stage primaryStage) {
         gameBoard = new GameBoard(GAME_TARGET_AREA_HEIGHT, GAME_TARGET_AREA_WIDTH);
-        pane = new ShootingPane(PANE_HEIGHT, PANE_WIDTH);
-        gameUI = new GameUI(gameBoard, primaryStage, pane);
+        gameUI = new GameUI(gameBoard, primaryStage);
         rng = new Random();
-        
     }
 
     public void play() {
@@ -45,6 +40,7 @@ public class TargetGame {
     private void setNewTarget() {
         target = getRandomTarget();
         addTargetToBoard(target);
+        System.out.println("Target:"+target.getX()+", "+target.getY());
         gameUI.addTargetToUI(target);
     }
 
@@ -61,3 +57,4 @@ public class TargetGame {
     }
 
 }
+

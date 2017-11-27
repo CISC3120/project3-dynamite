@@ -1,6 +1,7 @@
 package edu.cuny.brooklyn.cisc3120.project.game;
 
 import org.slf4j.Logger;
+
 import org.slf4j.LoggerFactory;
 
 public class GameBoard {
